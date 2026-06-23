@@ -273,7 +273,7 @@ Do not hand off `local-only` items: that work stays with the main firstmate (sec
 Firstmate keeps project knowledge split by ownership.
 
 **Project-intrinsic knowledge** belongs to the project.
-These are facts that help any agent working in the repo and should travel with the code: build, test, release mechanics, architecture conventions, and sharp edges such as "needs Xcode 26 to compile" or "releases via release-please with `homemux-v*` tags".
+These are facts that help any agent working in the repo and should travel with the code: build, test, release mechanics, architecture conventions, and sharp edges such as "needs Xcode 26 to compile", "releases via release-please with `homemux-v*` tags", or "pnpm projects with native deps need `pnpm approve-builds` once, or `pnpm install`/`start`/`test` hard-fail with `ERR_PNPM_IGNORED_BUILDS`".
 This knowledge lives in the project's committed `AGENTS.md`.
 A project's `AGENTS.md` is the real file; `CLAUDE.md` is a symlink to it.
 
@@ -301,6 +301,7 @@ Do not eagerly backfill every project.
 Orthogonal to mode is an optional `+yolo` flag (`[direct-PR +yolo]`), default off and **not recommended**: with `yolo` on, firstmate makes the approval decisions itself instead of asking the captain (section 7). When the captain adds a project without saying, default to `no-mistakes` with yolo off; only set a faster mode or `+yolo` on the captain's explicit say-so.
 
 **Clone existing:** `git clone <url> projects/<name>`, add its registry line with the chosen mode, then initialize only if the mode is `no-mistakes`.
+A freshly cloned (or fleet-synced) pooled clone has no installed dependencies of its own - crewmate worktrees each get their own. So to run or preview a project directly from its pooled clone (e.g. to answer "is the dev server up"), install deps there first (`pnpm install`, etc.); do not assume the bare clone can start.
 
 **Create new:** for `no-mistakes` and `direct-PR` modes a new project needs a GitHub repo first (they push to an `origin` remote); a `local-only` project needs no remote at all - a purely local git repo is fine.
 Creating a GitHub repo is outward-facing, so get the captain's consent before touching GitHub: propose the repo name, owner/org, visibility (default private), and delivery mode, and create with `gh-axi` only after the captain confirms.
